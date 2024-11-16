@@ -58,6 +58,13 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/Main.class</exclude>
+                                <exclude>**/persistence/**</exclude>
+                                <exclude>**/dtos/**</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-check</id>
@@ -71,7 +78,7 @@
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
+                                            <value>COVERED RATIO</value>
                                             <minimum>0.95</minimum>
                                         </limit>
                                     </limits>

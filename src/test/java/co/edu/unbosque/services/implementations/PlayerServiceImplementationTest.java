@@ -6,8 +6,8 @@ import co.edu.unbosque.persistence.entites.Player;
 import co.edu.unbosque.persistence.repositories.implementations.PlayerRepositoryImplementation;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -84,6 +84,43 @@ public class PlayerServiceImplementationTest {
         verify(repository, times(1)).findById(anyLong());
         verify(modelMapper, times(1)).map(any(), eq(PlayerDTO.class));
 
+    }
+
+    @Test
+    public void testSave(){
+        //Given
+        PlayerDTO playerDTO = DataProvider.newPlayerMock();
+        //When
+        when
+                (modelMapper.map(any(), eq(Player.class)))
+                .thenAnswer(
+                        invocation -> {
+                            PlayerDTO dto = invocation.getArgument(0);
+                            return new Player(dto.getId(), dto.getName(), dto.getTeam(), dto.getPosition());
+                        });
+        service.save(playerDTO);
+        //Then
+        ArgumentCaptor<Player> playerCaptor = ArgumentCaptor.forClass(Player.class);
+        verify(repository).save(any(Player.class));
+        verify(repository).save(playerCaptor.capture());
+        verify(modelMapper, times(1)).map(any(), eq(Player.class));
+
+        assertEquals(7l, playerCaptor.getValue().getId());
+        assertEquals("Luis Diaz", playerCaptor.getValue().getName());
+
+    }
+
+    @Test
+    public void testDelete(){
+        //Given
+        Long id = 1L;
+        //When
+        service.deleteById(id);
+        //Then
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+        verify(repository).deleteById(anyLong());
+        verify(repository).deleteById(captor.capture());
+        assertEquals(1L, captor.getValue());
     }
 
 

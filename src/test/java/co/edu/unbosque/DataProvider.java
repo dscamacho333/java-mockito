@@ -1,5 +1,6 @@
 package co.edu.unbosque;
 
+import co.edu.unbosque.dtos.PlayerDTO;
 import co.edu.unbosque.persistence.entites.Player;
 
 import java.util.List;
@@ -23,5 +24,8 @@ public class DataProvider {
         return Optional.of(new Player(1L, "Lionel Messi", "Inter Miami", "Delantero"));
     }
 
+    public static PlayerDTO newPlayerMock(){
+        return new PlayerDTO(7L, "Luis Diaz", "Delantero", "Liverpool");
+    }
 
 }
